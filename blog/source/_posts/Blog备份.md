@@ -29,6 +29,8 @@ npm -v 查看npm版本
 
 ```
 git clone https://github.com/Annashuo/blog_source.git
+cd blog_source/blog/themes/
+scp -r next_copy next
 ```
 
 ### 重新渲染hexo并测试
