@@ -8,9 +8,9 @@ Introduction to database storage.
 
 <!--more-->
 ### Why not use OS?
-If you rely on the operating system, then you have less hcoise in your design space inside the database system.
+If you rely on the operating system, then you have less choise in your design space inside the database system.
 
-If using the operating system, when the process hit a page fault and it need to hold loks to some tuples or other latches to other data structures. It will be blocking for a long time and all other threads that are running other queries and other transactions could not be doing useful work but they can because all the locks.
+If using the operating system, when the process hit a page fault and it need to hold locks to some tuples or other latches to other data structures. It will be blocking for a long time and all other threads that are running other queries and other transactions could not be doing useful work but they can because all the locks.
 
 ### What DBMS can do for storage?
 
@@ -52,7 +52,7 @@ Maintain a <u>header page</u> at the beginning of the file that stores two point
 ##### Page directory
 Maintain special pages that tracks the location of the data pages in the database files. The directory also records the number of free slot per page.
 
-The DBMS has to make sure that the directory pages are in sync with the daya pages.
+The DBMS has to make sure that the directory pages are in sync with the data pages.
 
 ![](https://github.com/Annashuo/hello-world/blob/master/page-directory.png?raw=true)
 
@@ -106,7 +106,7 @@ A tuple is essentially a sequence of bytes. DBMS interpret those bytes into attr
 
 Each tuple is assigned a unique record identifier
 
-- Most common: $page_id + offset/slot$
+- Most common: $page\_id + offset/slot$
 - Can also contain file location info
 
 #### Tuple header
