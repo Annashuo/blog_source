@@ -66,6 +66,36 @@ Since all nodes will send a lot of requests to zookeeper simultaneously, with a 
 
 Having those two "badges of honor" is not a trivial achievement we will try to repeat for every distributed system.
 
+### Registration and Discovery
+#### Static Configuration 
+- Put all nodes addresses on a single configuration file and distribute the file among all the nodes before launch the application.
+- If one of the node becomes unavailable or change its address, the other nodes would still try to use the old address and will never be able to discover the new address.
+- If we add a new node to expand our cluster, we'll have to regenerate this file and distribute the new file to all the nodes.
+
+#### Dynamic Configuration
+- Everytime a new node is added - one central configuration is updated
+- An automated configuration management tool such as *Chef* or *Puppet* can pick up the configuration and distribute it among the nodes in the cluster.
+- More dynamic but still involves a human to update the configuration.
+
+#### Fully automatically discovery - Zookeeper
+- **Service Registry**: Every node that joins the cluster will add an emphemeral sequential node under the service registty node(*/service_registry*). Each node would put its own address inside its Znode
+- **Service Discovery**: Each node that wants to communicate or even be aware of any other node in the cluster, it simply register a watcher on the service registry node(*/service_registry*) using the *getChildren* method. Then when it wants to read or use a particular nodes address, the node will simply call the *getData* method. If there is any change in the cluster, the node will be notified with the *NodeChildrenChanged* event.
+
+##### Peer to Peer Communication
+Every node in the cluster register a watcher to the service registry node. If a node is down or a new node is added to the cluster, every node will get notification.
+
+#### Leader / Worker Architecture
+- The workers don't need to know about each other at all but register themselves in the registry
+- Only the leader will register for notifications
+- Leader will know about the state of the cluster at all times and ditribute the work accordingly
+- If a leader die, the new leader will remove itself from the service registry and continue distributing the work.
+
+#### Function of Service Registry
+- Register to the cluster by publishing their address
+- Register for updates to get any node's address
+- cluster can scale without any modifications
+- establish the communication within the cluster
+
 ### Reference
 Github - https://github.com/Annashuo/Distributed-System
 Udemy Course - https://www.udemy.com/course/distributed-systems-cloud-computing-with-java/
